@@ -80,5 +80,3 @@ class Consumer(Thread):
                             cantitate_maxima = cantitate_maxima - 1
                         else:
                             time.sleep(self.retry_wait_time)
-                
-                

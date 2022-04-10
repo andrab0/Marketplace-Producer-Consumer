@@ -7,11 +7,18 @@ March 2021
 """
 
 
+from re import M
+
+
 class Marketplace:
     """
     Class that represents the Marketplace. It's the central part of the implementation.
     The producers and consumers use its methods concurrently.
     """
+    # variabile de clasa
+    producer_id = -1;
+    
+    
     def __init__(self, queue_size_per_producer):
         """
         Constructor
@@ -26,6 +33,9 @@ class Marketplace:
         """
         Returns an id for the producer that calls this.
         """
+        self.producer_id += 1;
+        # print(self.producer_id)
+        return "id_producer_" + str(self.producer_id)
         pass
 
     def publish(self, producer_id, product):
@@ -84,3 +94,10 @@ class Marketplace:
         :param cart_id: id cart
         """
         pass
+
+# if __name__ == "__main__":
+#     mkpl1 =  Marketplace(50);
+#     mkpl2 =  Marketplace(50);
+#     print(mkpl1.register_producer())
+#     print(mkpl1.register_producer())
+#     print(mkpl2.register_producer())

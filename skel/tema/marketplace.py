@@ -19,6 +19,7 @@ class Marketplace:
         :type queue_size_per_producer: Int
         :param queue_size_per_producer: the maximum size of a queue associated with each producer
         """
+        self.queue_size_per_producer = queue_size_per_producer
         pass
 
     def register_producer(self):

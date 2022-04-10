@@ -87,4 +87,3 @@ class Consumer(Thread):
                     # afisez produsele cumparate:
                     print(self.kwargs['name'] + ' a cumparat urmatorul produs: ' + produs)
                     
-

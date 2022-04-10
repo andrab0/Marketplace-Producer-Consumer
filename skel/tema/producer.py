@@ -50,7 +50,7 @@ class Producer(Thread):
 
                 # pana am atins cantitatea dorita din tipul produsului, incerc sa il public in marketplace:
                 while (cantitate_produsa < cantitate_maxima_produse):
-                    publicat = self.marketplace.publish(self.producer_id, current_product)
+                   publicat = self.marketplace.publish(self.producer_id, current_product)
                     
                     # daca s-a putut publicat produsul cu succes, astept timpul necesar pentru producere
                     # si dupa trec la urmatoarea producere, iar daca operatia nu s-a efectuat cu succes
@@ -58,6 +58,7 @@ class Producer(Thread):
                     if publicat is True:
                         # timp necesar pentru producerea produsului actual:
                         time.sleep(timp_producere)
+
                         # trec la urmatoarea producere:
                         cantitate_produsa = cantitate_produsa + 1;
                     else:

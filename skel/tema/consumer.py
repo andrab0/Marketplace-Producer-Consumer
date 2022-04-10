@@ -37,7 +37,7 @@ class Consumer(Thread):
         self.carts = carts
         self.marketplace = marketplace
         self.retry_wait_time = retry_wait_time
-        self.kwargs = ["name"]
+        self.kwargs = ['name']
         pass
 
     def run(self):
@@ -81,4 +81,10 @@ class Consumer(Thread):
                         else:
                             time.sleep(self.retry_wait_time)
                 
-                
+                # plasez comanda de produse pentru cart-ul curent:
+                produse_cumparate = self.marketplace.place_order(self.cart_id)
+                for produs in produse_cumparate:
+                    # afisez produsele cumparate:
+                    print(self.kwargs['name'] + ' a cumparat urmatorul produs: ' + produs)
+                    
+

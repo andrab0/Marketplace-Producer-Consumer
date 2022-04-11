@@ -41,7 +41,10 @@ class Consumer(Thread):
         for current_cart in self.carts:
             # generez un id pentru cart-ul curent
             cart_id = self.marketplace.new_cart()
-
+            
+            # print("INCEPE CART NO")
+            # print(cart_id)
+            
             # parcurg actiunile disponibile pentru cart-ul curent:
             for actiune_cart in current_cart:
                 tip_actiune = actiune_cart['type']
@@ -61,6 +64,8 @@ class Consumer(Thread):
                         # iar daca operatia a esuat, astept timpul necesar pentru reincercare:
                         if adaugat is True:
                             cantitate_adaugata = cantitate_adaugata + 1
+                            # print("CANTITATE ADAUGATA")
+                            # print(cantitate_adaugata)
                         else:
                             time.sleep(self.retry_wait_time)
                 
@@ -78,4 +83,5 @@ class Consumer(Thread):
             for produs in produse_cumparate:
                 # afisez produsele cumparate:
                 print("{} bought {}".format(self.name, produs))
+
                     

@@ -13,8 +13,6 @@ class Producer(Thread):
     """
     Class that represents a producer.
     """
-    producer_id: str
-
     def __init__(self, products, marketplace, republish_wait_time, **kwargs):
         """
         Constructor.
@@ -39,18 +37,18 @@ class Producer(Thread):
 
     def run(self):
         # generez un id pentru producatorul curent:
-        self.producer_id = self.marketplace.register_producer()
+        producer_id = self.marketplace.register_producer()
         
         # cat timp programul se executa parcurg produsele producatorului curent si incerc sa le public:
         while True:
             for current_product in self.products:
-                cantitate_produsa = 0;
+                cantitate_produsa = 0
                 cantitate_maxima_produse = current_product[1]  
                 timp_producere = current_product[2]              
 
                 # pana am atins cantitatea dorita din tipul produsului, incerc sa il public in marketplace:
                 while (cantitate_produsa < cantitate_maxima_produse):
-                   publicat = self.marketplace.publish(self.producer_id, current_product)
+                    publicat = self.marketplace.publish(producer_id, current_product[0])
                     
                     # daca s-a putut publicat produsul cu succes, astept timpul necesar pentru producere
                     # si dupa trec la urmatoarea producere, iar daca operatia nu s-a efectuat cu succes
@@ -60,6 +58,6 @@ class Producer(Thread):
                         time.sleep(timp_producere)
 
                         # trec la urmatoarea producere:
-                        cantitate_produsa = cantitate_produsa + 1;
+                        cantitate_produsa = cantitate_produsa + 1
                     else:
                         time.sleep(self.republish_wait_time)

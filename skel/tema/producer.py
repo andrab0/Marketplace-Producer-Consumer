@@ -38,21 +38,24 @@ class Producer(Thread):
     def run(self):
         # generez un id pentru producatorul curent:
         producer_id = self.marketplace.register_producer()
-        
-        # cat timp programul se executa parcurg produsele producatorului curent si incerc sa le public:
+
+        # cat timp programul se executa parcurg produsele producatorului
+        # curent si incerc sa le public:
         while True:
             for current_product in self.products:
                 cantitate_produsa = 0
-                cantitate_maxima_produse = current_product[1]  
-                timp_producere = current_product[2]              
+                cantitate_maxima_produse = current_product[1]
+                timp_producere = current_product[2]
 
-                # pana am atins cantitatea dorita din tipul produsului, incerc sa il public in marketplace:
-                while (cantitate_produsa < cantitate_maxima_produse):
+                # pana am atins cantitatea dorita din tipul produsului,
+                # incerc sa il public in marketplace:
+                while cantitate_produsa < cantitate_maxima_produse:
                     publicat = self.marketplace.publish(producer_id, current_product[0])
-                    
-                    # daca s-a putut publicat produsul cu succes, astept timpul necesar pentru producere
-                    # si dupa trec la urmatoarea producere, iar daca operatia nu s-a efectuat cu succes
-                    # din diverse motive, astept pana pot reincerca publicarea:
+
+                    # daca s-a putut publicat produsul cu succes, astept timpul
+                    # necesar pentru producere si dupa trec la urmatoarea producere,
+                    # iar daca operatia nu s-a efectuat cu succes din diverse motive,
+                    # astept pana pot reincerca publicarea:
                     if publicat is True:
                         # timp necesar pentru producerea produsului actual:
                         time.sleep(timp_producere)

@@ -8,7 +8,7 @@ March 2021
 
 
 from re import M
-import time
+from threading import RLock
 
 class Marketplace:
     """
@@ -33,11 +33,10 @@ class Marketplace:
         # date necesare cart: contor id_cart si dictionar pentru retinerea
         # produselor adaugate:
         self.cart_id = -1
-        self.cart_si_produse = {} # dict {cart_id: [produse]}
+        self.cart_si_produse = {} # dict {cart_id: produs}
         
         # date necesare pentru rezervarea produselor:
-        self.produse_disponibile = [] # [[produs, producer_id]]
-        self.producer_ids_rezervate = {} #dict {producer_id: [produs, cart_id]}
+        self.produse_disponibile = {} # dict {producer_id: lungime_lista_produse}
 
     def register_producer(self):
         """
@@ -49,11 +48,12 @@ class Marketplace:
         # pentru noul id_producer generat initializez stochez in
         # dictionar cheia = producer_id si o lista nula pentru produse:
         self.producer_si_produse[str(self.producer_id)] = []
+        # setez lungimea listei de produse disponibile a producerului curent:
+        self.produse_disponibile.setdefault(str(self.producer_id), 0)
 
         # print(self.producer_id)
         # returnez id-ul producer-ului sub forma de string:
-        a = self.producer_id
-        return str(a)
+        return str(self.producer_id)
 
     def publish(self, producer_id, product):
         """
@@ -73,11 +73,11 @@ class Marketplace:
         if producer_id in self.producer_si_produse.keys():
             if len(self.producer_si_produse[producer_id]) < self.queue_size_per_producer:
                 self.producer_si_produse[producer_id].append(product)
-                self.produse_disponibile.append([product, producer_id])
-                # print('inainte true')
+                # incrementez numarul de produse disponibile din marketplace
+                self.produse_disponibile[producer_id] = self.produse_disponibile[producer_id] + 1
+               
                 return True  
 
-        # print('inainte false')
         return False
 
     def new_cart(self):
@@ -92,11 +92,7 @@ class Marketplace:
         # pentru noul cart_id generat stochez in 
         # dictionar cheia = cart_id si o lista nula pentru produse: 
         self.cart_si_produse[self.cart_id] = []
-        # print(self.cart_id)
-        # returnez id-ul cart-ului:
-        # print("PRODUCATORUL ARE LA INITIEREA CARTULUI")
-        # print(self.producer_si_produse)
-        # print(self.produse_disponibile)
+    
         return self.cart_id
 
     def add_to_cart(self, cart_id, product):
@@ -111,18 +107,17 @@ class Marketplace:
 
         :returns True or False. If the caller receives False, it should wait and then try again
         """
-        # parcurg elementele disponibile la momentul actual din partea
-        # tuturor producerilor:
-        for cheie in self.producer_si_produse.keys():
-            for lista in self.produse_disponibile:
-                if (lista[0] == product) and (lista[1] == cheie):
-                    # daca produsul exista in lista de produse disponibile,
-                    # il adaug in lista de produse din cart:
-                    self.produse_disponibile.remove(lista)
-                    self.producer_ids_rezervate.update({cheie: [product, cart_id]})
-                    self.cart_si_produse[cart_id].append(product)
-                    return True
-
+        # pentru fiecare producator:
+        for prod_id in self.producer_si_produse.keys():
+            # daca produsul se afla in lista de produse ale producer-ului curent: 
+            if product in self.producer_si_produse[prod_id]:
+                # adaug produsul in cart-ul curent:
+                self.cart_si_produse[cart_id].append(product)
+                # decrementez numarul de produse disponibile ale producer-ului curent:
+                self.produse_disponibile[prod_id] = self.produse_disponibile[prod_id] - 1
+                
+                return True
+     
         return False
 
     def remove_from_cart(self, cart_id, product):
@@ -135,15 +130,16 @@ class Marketplace:
         :type product: Product
         :param product: the product to remove from cart
         """
-        # daca produsul meu se afla in produsele din cart-ul actual:
-        if product in self.cart_si_produse[cart_id]:
-            # elimin produsul din cart-ul actual
-            self.cart_si_produse[cart_id].remove(product)
-
-            # adaug produsul inapoi in produsele disponibile in marketplace
-            for cheie in self.producer_ids_rezervate.keys():
-                if (self.producer_ids_rezervate[cheie][1] == cart_id):
-                    self.produse_disponibile.append([self.producer_ids_rezervate[cheie][0], cheie])
+        # pentru fiecare producator:
+        for prod_id in self.producer_si_produse.keys():
+            # daca produsul meu se afla in produsele din cart-ul actual:
+            if product in self.cart_si_produse[cart_id]:
+                # elimin produsul din cart-ul actual
+                self.cart_si_produse[cart_id].remove(product)
+                # incrementez numarul de produse disponibile ale producer-ului curent:
+                self.produse_disponibile[prod_id] = self.produse_disponibile[prod_id] - 1
+                
+                break
 
     def place_order(self, cart_id):
         """
@@ -152,15 +148,14 @@ class Marketplace:
         :type cart_id: Int
         :param cart_id: id cart
         """
-        # print("lungime")
-        # print(len(self.producer_si_produse["0"]))
-        # print("PRODUCATORUL ARE INAINTE DE CUMPARARE")
-        # print(self.producer_si_produse)
-        # print(self.produse_disponibile)
-        
+        # print(self.cart_si_produse, "------------------------")
+        # print(self.producer_si_produse, "*************************")
         for produs in self.cart_si_produse[cart_id]:
-            for cheie in self.producer_ids_rezervate.keys():
-                if (self.producer_ids_rezervate[cheie][1] == cart_id):
-                    self.producer_si_produse[cheie].remove(produs)            
-            
+            # print("produsul: ", produs)
+            for prod_id, produse_curente in self.producer_si_produse.items():
+                if produs in produse_curente:
+                    if self.produse_disponibile[prod_id] < len(self.producer_si_produse[prod_id]):
+                        self.producer_si_produse[prod_id].remove(produs)
+                        # break
+
         return self.cart_si_produse[cart_id]

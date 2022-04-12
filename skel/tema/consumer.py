@@ -82,6 +82,6 @@ class Consumer(Thread):
             produse_cumparate = self.marketplace.place_order(cart_id)
             for produs in produse_cumparate:
                 # afisez produsele cumparate:
-                print("{} bought {}".format(self.name, produs))
+                print("{} bought {}".format(self.name, produs), flush=True)
 
                     

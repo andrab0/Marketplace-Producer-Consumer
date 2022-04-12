@@ -41,7 +41,10 @@ class Consumer(Thread):
         for current_cart in self.carts:
             # generez un id pentru cart-ul curent
             cart_id = self.marketplace.new_cart()
-
+            
+            # print("INCEPE CART NO")
+            # print(cart_id)
+            
             # parcurg actiunile disponibile pentru cart-ul curent:
             for actiune_cart in current_cart:
                 tip_actiune = actiune_cart['type']
@@ -51,31 +54,34 @@ class Consumer(Thread):
                 # verific daca este o actiuene de adaugare sau de eliminare:
                 if tip_actiune.startswith('a'):
                     cantitate_adaugata = 0
-
-                    # adaug produse pana cand ating limita maxima:
-                    while cantitate_adaugata < cantitate_maxima:
+ 
+                    # adaug produse pana cand ating limita maxima: 
+                    while (cantitate_adaugata < cantitate_maxima):
                         # incerc sa adaug produsul in cart:
                         adaugat = self.marketplace.add_to_cart(cart_id, produs)
-
+                        
                         # daca s-a adaugat produsul in cart, trec la urmatoarea adaugare,
                         # iar daca operatia a esuat, astept timpul necesar pentru reincercare:
                         if adaugat is True:
                             cantitate_adaugata = cantitate_adaugata + 1
+                            # print("CANTITATE ADAUGATA")
+                            # print(cantitate_adaugata)
                         else:
                             time.sleep(self.retry_wait_time)
-
+                
                 if tip_actiune.startswith('r'):
                     # elimin produse pana ating cat timp acestea sunt disponibile:
-                    while cantitate_maxima > 0:
+                    while (cantitate_maxima > 0):
                         # elimin produsul din cart:
                         self.marketplace.remove_from_cart(cart_id, produs)
 
                         # recalculez numarul de produse ramase in cart:
                         cantitate_maxima = cantitate_maxima - 1
-
+                
             # plasez comanda de produse pentru cart-ul curent:
             produse_cumparate = self.marketplace.place_order(cart_id)
             for produs in produse_cumparate:
                 # afisez produsele cumparate:
                 print("{} bought {}".format(self.name, produs), flush=True)
+
                     

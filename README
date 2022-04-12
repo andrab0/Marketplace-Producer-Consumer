@@ -1,0 +1,90 @@
+Nume: Bordincel Andra-Maria
+Grupă: 335CC
+
+# Tema MARKETPLACE
+
+Organizare
+
+Initial, am inceput cu implementarea pentru producer si consumer
+deoarece mi s-au parut putin mai logice si simple.
+
+Pentru producer am completat constructorul clasei, iar in metoda
+de run am generat un id pentru acesta, apoi am verifcat daca cantitatea
+deja existenta de produse este mai mica decat maximul pe care il poate
+realiza, ca sa pot publica produse in continuare.
+
+Pentru consumer am generat un id pentru cart-ul curent, iar apoi in functie
+de actiunea "add" sau "remove" am adaugat sau eliminat cantitatile cerute.
+La final am plasat comanda, iar apoi afisez produsele achizitionate de consumer.
+De mentionat faptul ca folosit si parametrul fflush pentru print deoarece testul
+10 are un output gigantic.
+
+Pentru marketplace am completat constructorul, in care am adaugat mai multe
+dictionare pe care sa realizez diverse operatii. Acestea sunt ilustrare in
+cate un comentariu alaturat pentru o mai buna intelegere a implementarii.
+Nu stiu daca are sens sa descriu toata implementarea pentru ca am pus in cod
+comentarii la absolut fiecare pas.
+
+Pentru logging am folosit documentatia data, dar nu pot spune daca e neaparat ok
+implementarea mea, deoarece nu am mai vazut niciodata asa ceva si nu am inteles
+complet ce trebuia facut.
+
+Nu consider ca tema este utila din vreun punct de vedere, pentru ca am pierdut
+foarte mult timp degeaba facand debug si am rescris metodele din marketplace
+de 5 ori pana sa imi dea una corect. Acum cu logging-ul iar a trebuit sa mai
+modific lucruri pentru ca aparent se strica treaba cu output-ul, dar nu pot spune
+ca stiu de ce. De asemena, mi s-ar parea mai normal sa ni se ceara astfel de lucruri
+precum logging si unitTests abia dupa ce ne-a fost prezentat macar un exemplu in
+cadrul laboratoarelor, nu sa ni se dea o documentatie si sa ne descurcam. Asa face
+fiecare cum crede si nu are nicio siguranta ca e in regula sau macar un reper.
+
+Probabil daca as fi inteles tema mai bine, da as fi putut face o implentare mai buna.
+
+
+Implementare
+
+Din enunt este implementata intreaga parte de Marketplace cu tot cu Cosumer si
+Producer, inclusiv partea de Logging.
+Local imi trec toate testele propuse fara implementarea altor functionalitati
+axuiliare, desi testul 10 de la o rulare la alta mai pica uneori (asta dupa ce
+am implementat partea de logging).
+
+Nu am implementat partea de UnitTesting deoarece, de 6 luni la munca imi bat
+capul cu googleTesting si unitTests in python si vreau sa traiesc o viata
+linistita fara unitTests.
+
+Ca dificultati, principala a fost ambiguitatea enuntului. Nu m-as fi gandit
+ca un enunt complet structurat implica faptul ca eu trebuie sa ma uit inainte
+in fisierele de input pentru test ca sa vad ce trebuie folosit de acolo.
+
+Ca lucru interesant, pot spune ca am inteles putin mai bine cum functioneaza
+un dictionar in Python.
+
+
+Resurse utilizate
+
+https://www.geeksforgeeks.org/python-dictionary-update-method/
+https://thispointer.com/python-dictionary-with-multiple-values-per-key/
+https://www.delftstack.com/howto/python/dictionary-with-multiple-values-in-python/
+https://www.datacamp.com/community/tutorials/python-list-methods?utm_source=adwords_ppc&utm_medium=cpc&utm_campaignid=1455363063&utm_adgroupid=65083631748&utm_device=c&utm_keyword=&utm_matchtype=&utm_network=g&utm_adpostion=&utm_creative=332602034364&utm_targetid=aud-299261629574:dsa-429603003980&utm_loc_interest_ms=&utm_loc_physical_ms=1011795&gclid=CjwKCAjwo8-SBhAlEiwAopc9W8DweBqVPsY-GKBEZrki-rSmQNAbC7iCSfGAPVG-gTHfoBfzxaABCRoCcDYQAvD_BwE
+https://stackoverflow.com/questions/28433554/key-with-multiple-values-check-if-value-is-in-dictionary-python
+https://teamtreehouse.com/community/typeerror-cannot-convert-dictionary-update-sequence-element-0-to-a-sequence
+https://www.programiz.com/python-programming/methods/dictionary/update
+https://docs.python.org/3/library/stdtypes.html#string-methods
+https://docs.python.org/3/library/threading.html#condition-objects
+https://www.w3schools.com/python/ref_dictionary_setdefault.asp
+https://www.techiedelight.com/increment-value-key-dictionary-python/
+https://www.pythonpool.com/cannot-convert-dictionary-update-sequence-element-0-to-a-sequence/
+https://www.hackerearth.com/practice/python/working-with-data/dictionary/tutorial/
+https://ocw.cs.pub.ro/courses/asc/laboratoare/01
+https://ocw.cs.pub.ro/courses/asc/laboratoare/02
+https://ocw.cs.pub.ro/courses/asc/laboratoare/03
+https://docs.python.org/3/library/logging.html#logging.Logger.error
+https://docs.python.org/3/library/logging.html
+https://docs.python.org/3/howto/logging.html
+https://www.geeksforgeeks.org/python-difference-between-lock-and-rlock-objects/
+
+
+Git
+
+https://github.com/andrab0/Tema-ASC
